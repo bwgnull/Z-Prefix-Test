@@ -13,8 +13,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.status(200).send(`Please Navigate to /users or /inventory`)
+    res.status(200).send(`Please Navigate to /users, /inventory, or /cart`)
 });
+
+//users
 
 app.get('/inventory', (req, res) => {
     knex
@@ -37,16 +39,16 @@ app.post('/inventory', (req, res) => { //create
     let newItem = req.body;
 
     if (!Object.hasOwn(newItem, 'Item_name')) {
-        res.status(400).send('Must provide Item_name property');
+        res.status(400).json('Must provide Item_name property');
     }
     if (!Object.hasOwn(newItem, 'Description')) {
-        res.status(400).send('Must provide Description property');
+        res.status(400).json('Must provide Description property');
     }
     if (!Object.hasOwn(newItem, 'Quantity')) {
-        res.status(400).send('Must provide Quantity property');
+        res.status(400).json('Must provide Quantity property');
     }
     if (!Object.hasOwn(newItem, 'UserId')) {
-        res.status(400).send('Must provide UserId property');
+        res.status(400).json('Must provide UserId property');
     }
 
     knex('item')
@@ -112,8 +114,19 @@ app.post('/users', (req, res) => { //create
         .then((data) => res.status(200).send(data));
 });
 
+app.get('/users/:username/inventory', (req, res) => {
+    const { username } = req.params;
+
+    knex('users')
+        .join('item', 'item.UserId', 'users.id')
+        .where('users.Username', username)
+        .select('item.id as ItemId', 'item.UserId', 'item.Item_name', 'item.Description', 'item.Quantity', 'users.id')
+        .then(items => res.json(items))
+        .catch(err => res.status(500).json({ error: err.message }));
+});
+
 app.get('/users/:username/:password', (req, res) => {
-    const { username, password } = req.params;
+    const {username, password} = req.params;
 
     knex('users')
         .where({ Username: username, Password: password })
