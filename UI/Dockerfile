@@ -2,19 +2,18 @@
 FROM node:alpine
 
 # Set and create the working directory for this app
-WORKDIR /API
-COPY package.json ./
+WORKDIR /UI
+
+# Copy this application's files from the current directory to the filesystem
+# of the container at /app
+COPY . /UI
+
+# Make the container accept traffic on port 8000 at runtime from other
+# containers or the host if also published
+EXPOSE 3000
 
 # Run this shell command at build time
 RUN npm install
 
-# Copy this application's files from the current directory to the filesystem
-# of the container at /app
-COPY . /API
-
-# Make the container accept traffic on port 8000 at runtime from other
-# containers or the host if also published
-EXPOSE 8000
-
 # Start the application
-CMD npm start
+CMD ["npm", "run", "dev"]

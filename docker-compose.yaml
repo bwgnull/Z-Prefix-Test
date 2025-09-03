@@ -1,0 +1,51 @@
+version: "3"
+services: 
+  postgres:
+    image: postgres
+    container_name: Z_pre_test
+    restart: always
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=test-db     
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=inventory
+    ports:
+    - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  networks:
+    - my_network
+
+  server:
+    build: ./API
+    container_name: inventory_api
+    restart: always
+    environment: 
+      - DATABASE_HOST=test-db     
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=docker
+      - DATABASE_PORT=8000
+      - DATABASE NAME=inventory
+    ports:
+      - "8000:8000"
+    networks:
+      - my_network
+    depends_on:
+      - db
+
+  frontend:
+    build: ./UI
+    container_name: Inventory_UI
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+    depends_on:
+      - server
+
+networks:
+  my_network:
+    driver: bridge
