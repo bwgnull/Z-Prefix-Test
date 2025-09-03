@@ -13,13 +13,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.status(200).send(`Please Log In!`)
+    res.status(200).send(`Please Navigate to /users or /inventory`)
 });
 
 app.get('/inventory', (req, res) => {
     knex
         .select()
         .from('item')
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(400).json(err));      //refactor to have buttons to add to inventory
+});
+
+app.get('/inventory/:id', (req, res) => {
+    knex
+        .select('*')
+        .from('item')
+        .where('id', '=', `${req.params.id}`)
         .then((data) => res.status(200).json(data))
         .catch((err) => res.status(400).json(err));      //refactor to have buttons to add to inventory
 });
