@@ -28,7 +28,7 @@ function PublicUserInventory() {
             <h1>All Items published by User {id}</h1>
             <div>
                 {items.map((item) => (
-                    <div key={item.id}>
+                    <div key={item.UserId} style={{ border: "2px solid black", paddingBottom: "0.2em", marginBottom: "0.2em", backgroundColor: "rgba(180, 235, 234, .91)" }}>
                         <div onClick={() => navigate(`/inventory/${item.id}`)}>
                             <p>
                                 AuthorID: {item.UserId} <br />

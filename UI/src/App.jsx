@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <AppContext value={{ username, setUsername, isLoggedIn, setIsLoggedIn }}>
+        <AppContext value={{ username, setUsername, isLoggedIn, setIsLoggedIn }}>
           <Routes>
             <Route path='/' element={<LoginPage />} />
             <Route path='/inventory' element={<InventoryPage />} />
@@ -24,7 +24,7 @@ function App() {
             <Route path='/inventory/:id' element={<ItemDisplay />} />
             <Route path='/inventory/users/:id' element={<PublicUserInventory />} />
           </Routes>
-      </AppContext>
+        </AppContext>
     </>
   )
 }

@@ -141,7 +141,7 @@ function UserInventory() {
                     <h3>There are currently no items in your inventory.</h3>
                 ) : (
                     items.map((item) => (
-                        <div key={item.UserId}>
+                        <div key={item.UserId} style={{ border: "2px solid black", paddingBottom: "0.2em", marginBottom: "0.2em", backgroundColor: "rgba(180, 235, 234, .91)" }}>
                             <div onClick={() => navigate(`/inventory/${item.ItemId}`)}>
                                 <p>
                                     Id: {item.ItemId} <br />
@@ -170,7 +170,7 @@ function UserInventory() {
             <br />
 
             <div>
-                <h2>Update Items</h2>
+                <h2>Update/Edit Items</h2>
                 <input type='number' name="Item_id" placeholder="Item ID of changed Item" value={updatedItemId} onChange={e => setUpdatedItemId(e.target.value)} />
                 <input type="text" name="Item_name" placeholder="Enter Updated Item Name" value={updatedItemName} onChange={e => setUpdatedItemName(e.target.value)} />
                 <input type='text' name="Description" placeholder=" Enter Updated Description Here " value={updatedDescription} onChange={e => setUpdatedDescription(e.target.value)} />

@@ -66,9 +66,6 @@ docker exec -it pg-docker bash
 cd API
 `npm start`               //should rollback the database, migrate the latest, and seed it alongside turn on the backend server
 
-**EVERY TIME** after running the roll back and the seed data, please go back to your bash terminal interfacing with the database and run:
-    `SELECT setval('item_id_seq', (SELECT MAX(id) FROM item));`               //resolves any issues with desync after the seed data 
-
 **SEPARATE TERMINAL**
 cd UI
 `npm run dev`           //open http://localhost:3000 in your web browser

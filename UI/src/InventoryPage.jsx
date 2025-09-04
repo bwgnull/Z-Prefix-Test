@@ -29,13 +29,14 @@ function InventoryPage() {
             <h1>Inventory from all inventory managers</h1>
             <div>
                 {items.map((item) => (
-                    <div key={item.id}>
+                    <div key={item.UserId} style={{ border: "2px solid black", paddingBottom: "0.2em", marginBottom: "0.2em", backgroundColor: "rgba(180, 235, 234, .91)" }}>
                         <div onClick={() => navigate(`/inventory/${item.id}`)}>
                             <p>
                                 AuthorID: {item.UserId} <br />
                                 Name: {item.Item_name} <br />
                                 Description: {item.Description.length > 100 ? item.Description.slice(0, 100) + "..." : item.Description} <br />
-                                Quantity: {item.Quantity}
+                                Quantity: {item.Quantity} <br /> <br />
+                                Click For more Info!
                             </p>
                         </div>
                     </div>

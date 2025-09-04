@@ -32,7 +32,7 @@ function ItemDisplay() {
             <h1>Details for {itemName}</h1>
             <div>
                 {items.map((item) => (
-                    <div key={item.UserId}>
+                    <div key={item.UserId} style={{ border: "2px solid black", paddingBottom: "0.2em", marginBottom: "0.2em", backgroundColor: "rgba(180, 235, 234, .91)" }}>
                         <p>
                             Id: {item.id} <br />
                             AuthorID: {item.UserId} <br />
