@@ -20,10 +20,10 @@ app.get('/', (req, res) => {
 
 app.get('/inventory', (req, res) => {
     knex
-        .select()
+        .select('*')
         .from('item')
         .then((data) => res.status(200).json(data))
-        .catch((err) => res.status(400).json(err));      //refactor to have buttons to add to inventory
+        .catch((err) => res.status(400).json(err));
 });
 
 app.get('/inventory/:id', (req, res) => {
@@ -32,23 +32,32 @@ app.get('/inventory/:id', (req, res) => {
         .from('item')
         .where('id', '=', `${req.params.id}`)
         .then((data) => res.status(200).json(data))
-        .catch((err) => res.status(400).json(err));      //refactor to have buttons to add to inventory
+        .catch((err) => res.status(400).json(err));
+});
+
+app.get('/inventory/users/:id', (req, res) => {
+    knex
+        .select('*')
+        .from('item')
+        .where('UserId', '=', `${req.params.id}`)
+        .then((data) => res.status(200).json(data))
+        .catch((err) => res.status(400).json(err));
 });
 
 app.post('/inventory', (req, res) => { //create
     let newItem = req.body;
 
     if (!Object.hasOwn(newItem, 'Item_name')) {
-        res.status(400).json('Must provide Item_name property');
+        return res.status(400).json({ error: 'Must provide Item_name property' });
     }
     if (!Object.hasOwn(newItem, 'Description')) {
-        res.status(400).json('Must provide Description property');
+        return res.status(400).json({ error: 'Must provide Description property' });
     }
     if (!Object.hasOwn(newItem, 'Quantity')) {
-        res.status(400).json('Must provide Quantity property');
+        return res.status(400).json({ error: 'Must provide Quantity property' });
     }
     if (!Object.hasOwn(newItem, 'UserId')) {
-        res.status(400).json('Must provide UserId property');
+        return res.status(400).json({ error: 'Must provide UserId property' });
     }
 
     knex('item')
@@ -62,7 +71,11 @@ app.put('/inventory/:id', async (req, res) => { //update
     try {
         const updated = await knex('item')
             .where({ id: req.params.id })
-            .update(updatedItem)
+            .update(req.body)
+            .returning('*'); 
+        if (updated.length === 0) {
+            return res.status(404).json({ error: "Item not found" });
+        }
         res.json(updated[0]);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -71,14 +84,14 @@ app.put('/inventory/:id', async (req, res) => { //update
 
 app.delete('/inventory/:id', async (req, res) => { //delete
     try {
-        const deleted = await knex('item').where({ id: req.params.id }).del(); //tries to see if it can delete item where the primary id is __
+        const deleted = await knex('item').where({ id: req.params.id }).del();
         if (deleted) {
             res.json({ message: 'deleted' })
         } else {
             res.json({ message: 'could not delete' })
         }
     } catch (err) {
-        res.status(500).json({ error: err.message }); //internal server error
+        res.status(500).json({ error: err.message });
     }
 });
 
@@ -114,6 +127,17 @@ app.post('/users', (req, res) => { //create
         .then((data) => res.status(200).send(data));
 });
 
+app.get('/users/:username', (req, res) => {
+    const { username } = req.params
+    knex
+        .select("id")
+        .from('users')
+        .where("Username", username)
+        .first()
+        .then(userid => res.json(userid))
+        .catch(err => res.status(500).json({ error: err.message }));
+})
+
 app.get('/users/:username/inventory', (req, res) => {
     const { username } = req.params;
 
@@ -126,7 +150,7 @@ app.get('/users/:username/inventory', (req, res) => {
 });
 
 app.get('/users/:username/:password', (req, res) => {
-    const {username, password} = req.params;
+    const { username, password } = req.params;
 
     knex('users')
         .where({ Username: username, Password: password })
