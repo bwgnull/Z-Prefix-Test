@@ -1,5 +1,5 @@
 import React from 'react'
-import { useContext, createContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { AppContext } from './App.jsx'
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ function LoginPage() {
     const [password, setPassword] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
-    const { username, setUsername, isLoggedIn, setIsLoggedIn } = useContext(AppContext)
+    const { username, setUsername, setIsLoggedIn } = useContext(AppContext)
     const navigate = useNavigate();
 
     function guestSignIn() {
@@ -39,7 +39,6 @@ function LoginPage() {
     }
 
     async function handleSubmit() {
-        const userData = { "Username": username, "Password": password }
         if (!username || !password) {
             alert("Please enter username and password");
         }
@@ -92,7 +91,7 @@ function LoginPage() {
                 <input type="username" name="username" placeholder=" Enter Username " onChange={e => setUsername(e.target.value)}></input>
                 <input type="password" name="password" placeholder=" Enter Password " onChange={e => setPassword(e.target.value)} onKeyUp={e => {
                     if (e.key === 'Enter') handleSubmit()
-                }}></input>
+                }}></input> &nbsp;
                 <button onClick={() => handleSubmit()}>Submit</button>
 
                 <br />

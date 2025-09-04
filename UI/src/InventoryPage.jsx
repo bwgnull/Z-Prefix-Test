@@ -9,7 +9,7 @@ function InventoryPage() {
     const navigate = useNavigate();
 
     function queryUser() {
-        navigate(`/inventory/${userQuery}`)
+        navigate(`/inventory/users/${userQuery}`)
     }
 
     useEffect(() => {
@@ -30,12 +30,14 @@ function InventoryPage() {
             <div>
                 {items.map((item) => (
                     <div key={item.id}>
-                        <p>
-                            AuthorID: {item.UserId} <br />
-                            Name: {item.Item_name} <br />
-                            Description: {item.Description.length > 100 ? item.Description.slice(0, 100) + "..." : item.Description} <br />
-                            Quantity: {item.Quantity}
-                        </p>
+                        <div onClick={() => navigate(`/inventory/${item.id}`)}>
+                            <p>
+                                AuthorID: {item.UserId} <br />
+                                Name: {item.Item_name} <br />
+                                Description: {item.Description.length > 100 ? item.Description.slice(0, 100) + "..." : item.Description} <br />
+                                Quantity: {item.Quantity}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>

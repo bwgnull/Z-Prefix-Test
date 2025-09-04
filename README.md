@@ -47,5 +47,29 @@ Unauthenticated users should be able to view all items, and any single item.
 
 # Instructions
 
-docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 \ 
+**GETTING STARTED**
+cd API
+
+`docker pull postgres`
+
+`mkdir -p $HOME/docker/volumes/postgres`
+
+docker run --rm --name pg-docker -e POSTGRES_PASSWORD=docker -d -p 5432:5432 \
 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data postgres
+
+docker exec -it pg-docker bash
+    `psql -U postgres`
+    `CREATE DATABASE inventory `
+    `\c inventory`
+
+**Separate Terminal:**
+cd API
+`npm start`               //should rollback the database, migrate the latest, and seed it alongside turn on the backend server
+
+**EVERY TIME** after running the roll back and the seed data, please go back to your bash terminal interfacing with the database and run:
+    `SELECT setval('item_id_seq', (SELECT MAX(id) FROM item));`               //resolves any issues with desync after the seed data 
+
+**SEPARATE TERMINAL**
+cd UI
+`npm run dev`           //open http://localhost:3000 in your web browser
+

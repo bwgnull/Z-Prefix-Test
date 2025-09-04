@@ -6,13 +6,13 @@ import LoginPage from './LoginPage.jsx'
 import UserInventory from './UserInventory.jsx'
 import PublicUserInventory from './PublicUserInventory.jsx'
 import InventoryPage from './InventoryPage.jsx'
+import ItemDisplay from './ItemDisplay.jsx'
 
 export const AppContext = createContext('');
 
 function App() {
   const [username, setUsername] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userQuery, setUserQuery] = useState();
 
   return (
     <>
@@ -21,7 +21,8 @@ function App() {
             <Route path='/' element={<LoginPage />} />
             <Route path='/inventory' element={<InventoryPage />} />
             <Route path='/:username/inventory' element={<UserInventory />} />
-            <Route path='/inventory/:id' element={<PublicUserInventory />} />
+            <Route path='/inventory/:id' element={<ItemDisplay />} />
+            <Route path='/inventory/users/:id' element={<PublicUserInventory />} />
           </Routes>
       </AppContext>
     </>
