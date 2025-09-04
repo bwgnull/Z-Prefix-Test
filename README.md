@@ -62,7 +62,7 @@ docker exec -it pg-docker bash
     `CREATE DATABASE inventory `
     `\c inventory`
 
-**Separate Terminal:**
+**SEPARATE TERMINAL:**
 cd API
 `npm start`               //should rollback the database, migrate the latest, and seed it alongside turn on the backend server
 
