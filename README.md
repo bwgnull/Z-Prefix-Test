@@ -48,6 +48,8 @@ Unauthenticated users should be able to view all items, and any single item.
 # Instructions
 
 **GETTING STARTED**
+
+**IN TERMINAL**
 cd API
 
 `docker pull postgres`
